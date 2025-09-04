@@ -35,7 +35,7 @@ const Login = () => {
           password
         };
         try{
-        const response = await axios.post("http://localhost:3000/api/v1/register", formData);
+        const response = await axios.post("https://mern-login-ache.onrender.com/api/v1", formData);
          toast.success("Registration successfull");
          navigate("/login");
        }catch(err){
