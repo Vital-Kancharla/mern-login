@@ -28,7 +28,7 @@ const Login = () => {
       };
       try {
         const response = await axios.post(
-          "/api/v1/login",
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/login`,
           formData
         );
         localStorage.setItem('auth', JSON.stringify(response.data.token));
