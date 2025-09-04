@@ -19,6 +19,3 @@ This project is a full-stack MERN (MongoDB, Express, React, Node.js) application
 
 ##Live-At
 Access the app at https://mern-login-ache.onrender.com
-
-## License
-This project is licensed under the ISC License.
