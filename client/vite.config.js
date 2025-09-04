@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: process.env.RENDER_INTERNAL_HOSTNAME ? `http://${process.env.RENDER_INTERNAL_HOSTNAME}:3000` : 'http://localhost:3000',
         changeOrigin: true,
       },
     },
