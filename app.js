@@ -14,15 +14,14 @@ const app = express();
 
 const mainRouter = require("./routes/user");
 
-// Allow only your frontend origin for CORS
+// Allow only your frontend deployed origin
 const allowedOrigins = ['https://mern-login-ng68.onrender.com'];
 
 app.use(cors({
   origin: function(origin, callback) {
-    // allow requests with no origin (e.g. curl, Postman)
-    if (!origin) return callback(null, true);
+    if (!origin) return callback(null, true); // Allow non-browser requests like Postman
     if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      const msg = 'CORS policy: This origin is not allowed.';
       return callback(new Error(msg), false);
     }
     return callback(null, true);
@@ -31,16 +30,21 @@ app.use(cors({
   credentials: true
 }));
 
+// Handle preflight requests
+app.options('*', cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.use("/api/v1", mainRouter);
 
-// Serve static files from the React app build directory
-
+// Serve static files from React app build folder
 app.use(express.static(path.join(__dirname, 'client/dist')));
 
-// Catch all handler: send back React's index.html file for client-side routing
-
+// Catch all route to serve React index.html for client-side routing
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/dist/index.html'));
 });
@@ -52,9 +56,9 @@ const start = async () => {
     await connectDB(process.env.MONGO_URI);
     app.listen(port, () => {
       console.log(`Server is listening on port ${port}`);
-    })
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
