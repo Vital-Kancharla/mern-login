@@ -10,21 +10,19 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const fetchLuckyNumber = async () => {
-
-    let axiosConfig = {
-      headers: {
-        'Authorization': `Bearer ${token}`
+  let axiosConfig = {
+    headers: {
+      'Authorization': `Bearer ${token}`
     }
-    };
-
-    try {
-      const response = await axios.get(axios.get(`${import.meta.env.VITE_API_BASE_URL}/dashboard`)
-, axiosConfig);
-      setData({ msg: response.data.msg, luckyNumber: response.data.secret });
-    } catch (error) {
-      toast.error(error.message);
-    }
+  };
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/dashboard`, axiosConfig);
+    setData({ msg: response.data.msg, luckyNumber: response.data.secret });
+  } catch (error) {
+    toast.error(error.message);
   }
+}
+
 
 
   
