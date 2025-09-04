@@ -14,15 +14,14 @@ const app = express();
 
 const mainRouter = require("./routes/user");
 
-// Allow only your frontend deployed origin
+// Define your frontend origin URL
 const allowedOrigins = ['https://mern-login-ng68.onrender.com'];
 
 app.use(cors({
   origin: function(origin, callback) {
-    if (!origin) return callback(null, true); // Allow non-browser requests like Postman
+    if (!origin) return callback(null, true); // Allow requests like curl/postman with no origin
     if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'CORS policy: This origin is not allowed.';
-      return callback(new Error(msg), false);
+      return callback(new Error('CORS policy does not allow this origin'), false);
     }
     return callback(null, true);
   },
@@ -30,7 +29,7 @@ app.use(cors({
   credentials: true
 }));
 
-// Handle preflight requests
+// Handle OPTIONS preflight requests globally
 app.options('*', cors({
   origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -41,10 +40,10 @@ app.use(express.json());
 
 app.use("/api/v1", mainRouter);
 
-// Serve static files from React app build folder
+// Serve frontend static files
 app.use(express.static(path.join(__dirname, 'client/dist')));
 
-// Catch all route to serve React index.html for client-side routing
+// Catch-all route for client-side routing
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/dist/index.html'));
 });
@@ -58,7 +57,7 @@ const start = async () => {
       console.log(`Server is listening on port ${port}`);
     });
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
 
