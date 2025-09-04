@@ -28,7 +28,7 @@ const Login = () => {
       };
       try {
         const response = await axios.post(
-          "https://mern-login-ache.onrender.com/api/v1",
+          "https://mern-login-ng68.onrender.com",
           formData
         );
         localStorage.setItem('auth', JSON.stringify(response.data.token));
